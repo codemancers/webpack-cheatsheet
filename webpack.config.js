@@ -1,54 +1,57 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
+const webpack = require("webpack");
+
+const contextPath = path.join(__dirname, "src");
+const buildPath = path.join(__dirname, "build");
 
 module.exports = {
+  context: contextPath,
   entry: {
-    app: [
-      './src/index.js',
-    ]
+    app: ["./index.js"]
   },
   output: {
-    path: path.join(__dirname, 'build'),
-    filename: '[name].bundle.js',
+    path: buildPath,
+    filename: "[name].bundle.js"
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['env'],
-          plugins: [
-            ['transform-react-jsx']
-          ]
-        }
+        test: /\.(js|jsx)$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
       },
       {
         test: /\.scss?/i,
         use: [
           {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
+            loader: "style-loader",
             options: {
-              sourceMap: true,
+              sourceMap: true
             }
           },
           {
-            loader: 'sass-loader',
+            loader: "css-loader",
             options: {
-              sourceMap: true,
+              sourceMap: true
+            }
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true
             }
           }
-        ],
+        ]
       }
     ]
   },
-  devtool: 'source-map',
+  devtool: "source-map",
+  resolve: {
+    extensions: [".js", ".jsx"]
+  },
   devServer: {
-    contentBase: path.join(__dirname, 'src'),
+    contentBase: contextPath,
     compress: true,
     historyApiFallback: true
   }
-}
+};
